@@ -7,6 +7,9 @@ services:
     container_name: nginx
     ports:
       - "8080:80"
+    # volumes:
+    #   - ./nginx/nginx.conf:/etc/nginx/conf.d
+    #   - ./nginx-logs:/var/log/nginx
     networks:
       - nginx_network
     restart: always
@@ -18,9 +21,11 @@ services:
     image: nodejs
     container_name: nodejs
     entrypoint: ["dockerize", "-wait", "tcp://db:3306", "-timeout", "30s"]
-    command: "docker-entrypoint.sh index.js"
+    command: "docker-entrypoint.sh src/index.js"
     ports:
       - "3000:3000"
+    volumes:
+      - ./node:/usr/src/app
     restart: unless-stopped
     networks:
       - nginx_network
@@ -37,7 +42,7 @@ services:
       - "3006:3006"
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./mysql-conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql-config/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
@@ -47,4 +52,4 @@ services:
   
 networks:
   nginx_network:
-    driver: bridge
+    driver: bridge 

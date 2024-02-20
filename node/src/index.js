@@ -19,7 +19,9 @@ app.get("/", async (req, res) => {
     await pool.query("INSERT INTO people (name) VALUES (?)", [fakeName]);
     const [rows] = await pool.query("SELECT name FROM people ORDER BY name");
 
-    res.status(200).send({ message: "<h1>Full Cycle Rocks!</h1>", data: rows });
+    res
+      .status(200)
+      .send({ message: "<h1>Full Cycle Rocks...!</h1>", data: rows });
     await pool.end();
   } catch (err) {
     console.error("Error:", err);
