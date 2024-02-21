@@ -1,4 +1,4 @@
-FROM node:21.6.2
+FROM node:21.6.2-slim
 
 ENV DOCKERIZE_VERSION v0.7.0
 RUN apt-get update \
